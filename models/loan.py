@@ -6,7 +6,7 @@ class Loan:
     @staticmethod
     def borrow_book(book_id, member_id):
         try:
-            conn = sqlite3.connect('library_db')
+            conn = sqlite3.connect('library.db')
             cursor = conn.cursor()
 
             cursor.execute("SELECT is_available FROM books WHERE book_id = ?",(book_id,))
@@ -30,7 +30,7 @@ class Loan:
     @staticmethod
     def return_book(loan_id):
         try:
-            conn = sqlite3.connect('library_db')
+            conn = sqlite3.connect('library.db')
             cursor = conn.cursor()
 
             cursor.execute("SELECT book_id FROM loans WHERE loan_id = ?", (loan_id))
