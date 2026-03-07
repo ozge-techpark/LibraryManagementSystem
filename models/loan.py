@@ -15,7 +15,7 @@ class Loan:
             if result and result[0] == 1:
                 loan_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 cursor.execute(
-                    "INSERT INTO loans (book_id,member_id,loan_date) VALUES (?,?,?)"
+                    "INSERT INTO loans (book_id,member_id,loan_date) VALUES (?,?,?)",
                     (book_id, member_id, loan_date)
                 )
                 cursor.execute("UPDATE books SET is_available = 0 WHERE book_id = ?", (book_id))
