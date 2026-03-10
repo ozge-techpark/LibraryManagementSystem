@@ -34,6 +34,35 @@ class Book:
         FROM books b
         JOIN authors a ON b.author_id = a.author_id
         """
+        results = cursor.fetchall()
         cursor.execute (query)
         conn.close()
-        return Book
+        return results
+    
+    @staticmethod
+    def search_book(keyword):
+        conn = sqlite3.connect('library.db')
+        cursor = conn.cursor()
+
+        query =" SELECT * FROM books WHERE title LIKE ?"
+
+        cursor.execute(query, ('%' + keyword + '%',))
+
+        results = cursor.fetchall()
+        if not results:
+            print("The book you are looking for could not be found.")
+        for book in results:
+            print(book)
+        conn.close()
+
+    @staticmethod
+    def delete_book(book_id):
+        conn = sqlite3.connect('library.db')
+        cursor = conn.cursor()
+        
+        cursor.execute("DELETE FROM loans WHERE book_id = ?", (book_id,))
+
+        cursor.execute("DELETE FROM books WHERE book_id = ?", (book_id,))
+        conn.commit()
+        print(f"The book and its record with ID number is {book_id} have been deleted.")
+        conn.close()

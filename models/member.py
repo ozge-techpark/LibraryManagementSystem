@@ -32,7 +32,7 @@ class Member:
             conn = sqlite3.connect('library.db')
             cursor = conn.cursor()
             cursor.execute(
-                "SELECT member_id, name, role FROM members WHERE wmail = ? AND password = ?",
+                "SELECT member_id, name, role FROM members WHERE email = ? AND password = ?",
                 (email, password)
             )
             user = cursor.fetchone()

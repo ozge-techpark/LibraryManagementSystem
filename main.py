@@ -9,7 +9,8 @@ def manager_menu():
         print("1. Add Author")
         print("2. Add Book")
         print("3. List All Books")
-        print("4. Logout")
+        print("4. Delete book")
+        print("5. Logout")
 
         choice = input("Select an option: ")
 
@@ -27,6 +28,13 @@ def manager_menu():
                 status = "Available" if book[3] == 1 else "on loan"
                 print(f"ID: {book[0]} | Title: {book[1]} | Status: {status}")
         elif choice == '4':
+            books = Book.list_books()
+            for book in books: 
+                print(book)
+            target_id = int(input("Please choose a book ID for deleting the book: "))
+            Book.delete_book(target_id)
+
+        elif choice == '5':
             print("Loging out..")
             break
 def member_menu(member_id):
@@ -40,9 +48,12 @@ def member_menu(member_id):
 
         if choice == '1':
             books = Book.list_books()
-            for book in books:
-                status = "Available" if book[3] == 1 else "On Loan"
-                print(f"ID: {book[0]} | Title: {book[1]} | Status: {status}")
+            if books:
+                for book in books:
+                    status = "Available" if book[3] == 1 else "On Loan"
+                    print(f"ID: {book[0]} | Title: {book[1]} | Status: {status}")
+            else: 
+                print("There are no books registered in the library.")
         elif choice == '2':
             book_id = input("Enter Book ID to borrow: ")
             Loan.borrow_book(book_id, member_id)
@@ -56,7 +67,8 @@ def main():
     while True:
         print("Welcome to Library System")
         print("1. Login ")
-        print("2. Exit")
+        print("2. Register ")
+        print("3. Exit")
 
         start_choice = input("Select: ")
         if start_choice == '1':
@@ -71,10 +83,16 @@ def main():
                 if role == 'manager':
                     manager_menu()
                 else:
-                    member_menu()
+                    member_menu(member_id)
             else:
-                print("Error: Invalid emsil or password")
+                print("Error: Invalid email or password")
         elif start_choice == '2':
+            name = input("Your name: ")
+            email = input("Email: ")
+            password = input("Password: ")
+            Member.add_member(name, email, password)
+            print("Register successful. You can login now..")
+        elif start_choice == '3':
             sys.exit()
 if __name__ == "__main__":
     main()
