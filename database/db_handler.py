@@ -19,7 +19,7 @@ def create_tables():
                 name TEXT NOT NULL, 
                 email TEXT UNIQUE NOT NULL,
                 password TEXT NOT NULL,
-                role TEXT DEFAULT 'member')
+                role INTEGER DEFAULT 2)
 ''')
     
     cursor.execute('''CREATE TABLE IF NOT EXISTS books(

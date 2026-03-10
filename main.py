@@ -3,6 +3,7 @@ from models.member import Member
 from models.book import Book
 from models.author import Author
 from models.loan import Loan
+from models.member import USER_ROLES
 
 def manager_menu():
     while True:
@@ -30,7 +31,7 @@ def manager_menu():
         elif choice == '4':
             books = Book.list_books()
             for book in books: 
-                print(book)
+                print(f"ID: {book[0]} | Title: {book[1]}")
             target_id = int(input("Please choose a book ID for deleting the book: "))
             Book.delete_book(target_id)
 
@@ -77,10 +78,11 @@ def main():
 
             user = Member.login(email,password)
             if user:
-                member_id, name, role = user
-                print(f"Login successful. Welcome, {name} ({role})")
+                member_id, name, role_id = user
+                role_name = USER_ROLES[role_id]
+                print(f"Login successful. Welcome, {name} ({role_name})")
 
-                if role == 'manager':
+                if role_id == 1:
                     manager_menu()
                 else:
                     member_menu(member_id)
@@ -91,7 +93,6 @@ def main():
             email = input("Email: ")
             password = input("Password: ")
             Member.add_member(name, email, password)
-            print("Register successful. You can login now..")
         elif start_choice == '3':
             sys.exit()
 if __name__ == "__main__":

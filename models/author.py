@@ -11,7 +11,7 @@ class Author:
             conn = sqlite3.connect('library.db')
             cursor = conn.cursor()
 
-            cursor.execute("INSERT INTO authors (name) VALUES (?)", (name))
+            cursor.execute("INSERT INTO authors (name) VALUES (?)", (name,))
             conn.commit()
             conn.close()
             print(f"Author '{name} added succesfully.")
