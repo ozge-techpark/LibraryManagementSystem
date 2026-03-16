@@ -1,5 +1,7 @@
 import sqlite3
-
+import os
+base_path = os.path.dirname(os.path.abspath(__file__))
+db_path = os.path.join(base_path, "..", "library.db")
 USER_ROLES = {
     1: "manager",
     2: "member"
@@ -18,7 +20,7 @@ class Member:
     def add_member(name,email,password, role_id = 2):
         conn = None
         try:
-            conn = sqlite3.connect('library.db')
+            conn = sqlite3.connect(db_path)
             cursor = conn.cursor()
 
             cursor.execute(
@@ -39,7 +41,7 @@ class Member:
     @staticmethod
     def login(email,password):
         try:
-            conn = sqlite3.connect('library.db')
+            conn = sqlite3.connect(db_path)
             cursor = conn.cursor()
             cursor.execute(
                 "SELECT member_id, name, role FROM members WHERE email = ? AND password = ?",
@@ -53,7 +55,7 @@ class Member:
             return None
     @staticmethod
     def list_members():
-        conn = sqlite3.connect('library.db')
+        conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
         cursor.execute("SELECT * FROM members")

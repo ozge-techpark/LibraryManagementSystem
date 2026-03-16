@@ -1,5 +1,8 @@
 import sqlite3
+import os
 
+base_path = os.path.dirname(os.path.abspath(__file__))
+db_path = os.path.join(base_path, "..", "library.db")
 class Author:
     def __init__(self, name, author_id = None):
         self.id= author_id
@@ -8,7 +11,7 @@ class Author:
     @staticmethod
     def add_author(name):
         try:
-            conn = sqlite3.connect('library.db')
+            conn = sqlite3.connect(db_path)
             cursor = conn.cursor()
 
             cursor.execute("INSERT INTO authors (name) VALUES (?)", (name,))
@@ -21,7 +24,7 @@ class Author:
 
     @staticmethod
     def list_authors():
-        conn = sqlite3.connect('library.db')
+        conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
         cursor.execute("SELECT * FROM authors")

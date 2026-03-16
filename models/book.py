@@ -1,5 +1,7 @@
 import sqlite3
-
+import os
+base_path = os.path.dirname(os.path.abspath(__file__))
+db_path = os.path.join(base_path, "..", "library.db")
 class Book:
     def __init__(self, title,author_id, is_available = 1, book_id = None):
         self.id= book_id
@@ -10,7 +12,7 @@ class Book:
     @staticmethod
     def add_book(title, author_id):
         try: 
-            conn = sqlite3.connect('library.db')
+            conn = sqlite3.connect(db_path)
             cursor = conn.cursor()
 
             cursor.execute(
@@ -26,22 +28,22 @@ class Book:
         
     @staticmethod
     def list_books():
-        conn = sqlite3.connect('library.db')
+        conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
         query = """
         SELECT  b.book_id, b.title, a.name, b.is_available
         FROM books b
-        JOIN authors a ON b.author_id = a.author_id
+        LEFT JOIN authors a ON b.author_id = a.author_id
         """
-        results = cursor.fetchall()
         cursor.execute (query)
+        results = cursor.fetchall()
         conn.close()
         return results
     
     @staticmethod
     def search_book(keyword):
-        conn = sqlite3.connect('library.db')
+        conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
         query =" SELECT * FROM books WHERE title LIKE ?"
@@ -57,7 +59,7 @@ class Book:
 
     @staticmethod
     def delete_book(book_id):
-        conn = sqlite3.connect('library.db')
+        conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
         
         cursor.execute("DELETE FROM loans WHERE book_id = ?", (book_id,))

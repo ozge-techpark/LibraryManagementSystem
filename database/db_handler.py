@@ -30,7 +30,9 @@ def create_tables():
     cursor.execute('''CREATE TABLE IF NOT EXISTS loans (
                 loan_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 book_id INTEGER,
+                book_title TEXT,
                 member_id INTEGER,
+                member_name TEXT,
                 loan_date TEXT,
                 return_date TEXT,
                 FOREIGN KEY (book_id) REFERENCES books(book_id),
@@ -38,6 +40,7 @@ def create_tables():
 ''')
     conn.commit()
     conn.close()
-print("Database created succesfully")
+
+
 if __name__ == "__main__":
     create_tables()
