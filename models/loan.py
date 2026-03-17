@@ -75,3 +75,14 @@ class Loan:
         finally:
             if conn:
                 conn.close()
+    @staticmethod
+    def get_member_loans(member_id):
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+
+        query = """ SELECT loan_id, book_title, loan_date, FROM loans WHERE member_id = ? AND return_date IS NULL"""
+
+        cursor.execute(query, (member_id,))
+        user_loans = cursor.fetchall()
+        conn.close()
+        return user_loans

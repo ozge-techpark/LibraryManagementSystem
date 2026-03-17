@@ -41,9 +41,10 @@ def manager_menu():
 def member_menu(member_id):
     while True:
         print("1. List All Books")
-        print("2. Borrow a Book")
-        print("3. Return a Book")
-        print("4. Logout")
+        print("2. My Borrowed Books")
+        print("3. Borrow a Book")
+        print("4. Return a Book")
+        print("5. Logout")
 
         choice = input("Select an option: ")
 
@@ -56,12 +57,20 @@ def member_menu(member_id):
             else: 
                 print("There are no books registered in the library.")
         elif choice == '2':
+            loans = Loan.get_member_loans(member_id)
+            if loans:
+                print("Your books: ")
+                for loan in loans:
+                    print(f"Loan ID: {loan[0]} | Book: {loan[1]} | Date: {loan[2]}")
+            else:
+                print("You don't have any active loans.")
+        elif choice == '3':
             book_id = input("Enter Book ID to borrow: ")
             Loan.borrow_book(book_id, member_id)
-        elif choice == '3':
+        elif choice == '4':
             loan_id = input("Enter Loan ID to return: ")
             Loan.return_book(loan_id)
-        elif choice == '4':
+        elif choice == '5':
             print("Loging out..")
             break
 def main():
