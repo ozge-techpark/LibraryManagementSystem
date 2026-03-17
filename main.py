@@ -20,6 +20,9 @@ def manager_menu():
             Author.add_author(name)
         elif choice == '2':
             title = input("Enter a book title: ")
+            print("\n--- Available Authors ---")
+            for author in Author.list_authors():
+                print(f"ID: {author[0]} | Name: {author[1]}")
             author_id = input("Enter author ID: ")
             Book.add_book(title, author_id)
         elif choice == '3':
