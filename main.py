@@ -11,8 +11,9 @@ def manager_menu():
         print("2. Add Book")
         print("3. List All Books")
         print("4. Delete book")
-        print("5. Logout")
-
+        print("5. Last 10 Loans")
+        print("6. Export Loans Report")
+        print("7. Logout")
         choice = input("Select an option: ")
 
         if choice == '1':
@@ -37,9 +38,15 @@ def manager_menu():
                 print(f"ID: {book[0]} | Title: {book[1]}")
             target_id = int(input("Please choose a book ID for deleting the book: "))
             Book.delete_book(target_id)
-
         elif choice == '5':
-            print("Loging out..")
+            last_loans = Loan.get_last_ten_loans()
+            for last in last_loans:
+                print(f"ID: {last[0]} | Book: {last[1]} | Member: {last[2]} | Date: {last[3]}")
+        elif choice == '6':
+            Loan.export_loans_to_json()
+            print("Report generated successfully!")    
+        elif choice == '7':
+            print("Logging out..")
             break
 def member_menu(member_id):
     while True:
