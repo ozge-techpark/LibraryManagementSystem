@@ -61,5 +61,14 @@
         "return_date": "2026-03-17 16:55:42",
         "book_title": "1984",
         "member_name": "raman"
+    },
+    {
+        "loan_id": 9,
+        "book_id": 3,
+        "member_id": 2,
+        "loan_date": "2026-03-23 16:19:56",
+        "return_date": "2026-03-23 16:20:12",
+        "book_title": "Suç ve Ceza",
+        "member_name": "Ozan"
     }
 ]

@@ -18,7 +18,7 @@ First, run 'create_admin.py' to create an admin account.
 
 Run 'main.py' to start the application.
 
-Use 'ozgeseven56@gmail.com' and your password to login as manager.
+Use 'ozge@gmail.com' and your password to login as manager.
 
 4. PROJECT STRUCTURE
 
