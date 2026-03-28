@@ -33,21 +33,28 @@ class Loan:
                 conn.commit()
                 print(f"Success: '{book_title}' borrowed by {member_name} successfully!")
             else:
-                print("Error: Book is not available or Member not found.")
+                print("Error: Book is not available.")
 
             conn.close()
         except sqlite3.Error as e:
             print(f"Database error: {e}")
 
     @staticmethod
-    def return_book(loan_id):
+    def return_book(loan_id, member_id = None):
         conn = None
         try:
             conn = sqlite3.connect(db_path)
             cursor = conn.cursor()
 
             
-            cursor.execute("SELECT book_id, book_title FROM loans WHERE loan_id = ?", (loan_id,))
+            if member_id:
+                cursor.execute("""SELECT book_id, book_title FROM loans WHERE loan_id = ? AND member_id = ? AND return_date IS NULL
+                """, (loan_id, member_id))
+            else:
+                cursor.execute("""
+                SELECT book_id, book_title FROM loans 
+                WHERE loan_id = ? AND return_date IS NULL
+            """, (loan_id,))
             result = cursor.fetchone()
 
             if result:
@@ -69,7 +76,7 @@ class Loan:
                 conn.commit()
                 print(f"Success: '{book_title}' has been returned successfully.")
             else:
-                print(f"Error: Loan record with ID {loan_id} not found.")
+                print("Error: Invalid Loan ID or this book was not borrowed by you.")
 
         except sqlite3.Error as e:
             print(f"Database error: {e}")
@@ -129,3 +136,30 @@ class Loan:
             json.dump(data, f, ensure_ascii= False, indent= 4)
 
         conn.close()
+    @staticmethod
+    def get_all_active_loans():
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+
+        cursor.execute("""
+                    SELECT loan_id, book_title, member_name
+                    FROM loans
+                    WHERE return_date is NULL
+                    """)
+        results = cursor.fetchall()
+        conn.close()
+        return results
+    @staticmethod
+    def books_loans():
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+
+        query = """
+        SELECT book_title, member_name, loan_date, return_date
+        FROM loans
+        ORDER BY loan_date DESC
+        """
+        cursor.execute(query)
+        results = cursor.fetchall()
+        conn.close()
+        return results

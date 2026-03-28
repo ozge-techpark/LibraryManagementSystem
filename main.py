@@ -13,7 +13,9 @@ def manager_menu():
         print("4. Delete book")
         print("5. Last 10 Loans")
         print("6. Export Loans Report")
-        print("7. Logout")
+        print("7. Return a Book")
+        print("8. View All Loan History")
+        print("9. Logout")
         choice = input("Select an option: ")
 
         if choice == '1':
@@ -46,6 +48,20 @@ def manager_menu():
             Loan.export_loans_to_json()
             print("Report generated successfully!")    
         elif choice == '7':
+            print("Currently Borrowed Books")
+            active_loans = Loan.get_all_active_loans()
+            for loan in active_loans:
+                print(f"Loan ID: {loan[0]} | Book: {loan[1]} | Member: {loan[2]}")
+            target_loan_id = input("Enter Loan ID to return to inventory: ")
+            Loan.return_book(target_loan_id)
+        elif choice == '8':
+            history = Loan.books_loans()
+            print("All book loan records: ")
+            print(f"{'Book Title: '} | {'Member: '} | {'Borrowed: '} | {'Status: '} ")
+            for h in history:
+                status = f"Returned ({h[3]})" if h[3] else "Still Out"
+                print(f"{h[0]} | {h[1]} | {h[2]} | {status}")
+        elif choice == '9':
             print("Logging out..")
             break
 def member_menu(member_id):
@@ -78,8 +94,14 @@ def member_menu(member_id):
             book_id = input("Enter Book ID to borrow: ")
             Loan.borrow_book(book_id, member_id)
         elif choice == '4':
-            loan_id = input("Enter Loan ID to return: ")
-            Loan.return_book(loan_id)
+            my_loans = Loan.get_member_loans(member_id)
+            if my_loans:
+                for loan in my_loans:
+                    print(f"Loan ID: {loan[0]} | Book Title: {loan[1]} | Date Borrowed: {loan[2]}")
+                loan_id = input("Enter the Loan ID of the book you want to return: ")
+                Loan.return_book(loan_id, member_id)
+            else:
+                print("You dont have any active loans to return.")
         elif choice == '5':
             print("Loging out..")
             break
